@@ -624,7 +624,11 @@ public class Vm extends AbstractVMSupport<PrivateCloud> {
                                     CustomizationFixedIp fixedIp = new CustomizationFixedIp();
                                     fixedIp.setIpAddress(options.getPrivateIp());
                                     adapter.setIp(fixedIp);
-                                    adapter.setSubnetMask("255.255.252.0");
+                                    if (options.getMetaData().containsKey("vSphereNetMaskNothingToSeeHere")) {
+                                        adapter.setSubnetMask((String)options.getMetaData().get("vSphereNetMaskNothingToSeeHere"));
+                                    } else {
+                                        adapter.setSubnetMask("255.255.252.0");
+                                    }
                                     adapterMap.setAdapter(adapter);
                                 }
                                 nicMappings.add(adapterMap);
@@ -644,7 +648,7 @@ public class Vm extends AbstractVMSupport<PrivateCloud> {
                         spec.setCustomization(customizationSpec);
                         log.debug("customizationSpec: " + customizationSpec);
                         for (int i = 0; i < nicMappingsSize; i++) {
-                            log.debug("IP" + i + ": " + customizationSpec.getNicSettingMap()[i].getAdapter().getIp());
+                            log.debug("IP" + i + ": " + customizationSpec.getNicSettingMap()[i].getAdapter().getIp().getDynamicProperty()[0].getVal());
                         }
 
                     }
