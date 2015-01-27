@@ -556,7 +556,11 @@ public class Vm extends AbstractVMSupport<PrivateCloud> {
                     boolean isCustomised = false;
                     if (options.getPrivateIp() != null) {
                         isCustomised = true;
+                        log.debug("isCustomised");
+                    } else {
+                        log.debug("notCustomised");
                     }
+                    int nicMappingsSize = 0;
                     CustomizationSpec customizationSpec = new CustomizationSpec();
                     if (isCustomised) {
                         String templatePlatform = template.getGuest().getGuestFullName();
@@ -627,6 +631,7 @@ public class Vm extends AbstractVMSupport<PrivateCloud> {
                             }
                             CustomizationAdapterMapping[] nicSettingMap = nicMappings.toArray(new CustomizationAdapterMapping[nicMappings.size()]);
                             customizationSpec.setNicSettingMap(nicSettingMap);
+                            nicMappingsSize = nicMappings.size();
                         }
                     }
 
@@ -637,6 +642,11 @@ public class Vm extends AbstractVMSupport<PrivateCloud> {
                     spec.setConfig(config);
                     if (isCustomised) {
                         spec.setCustomization(customizationSpec);
+                        log.debug("customizationSpec: " + customizationSpec);
+                        for (int i = 0; i < nicMappingsSize; i++) {
+                            log.debug("IP" + i + ": " + customizationSpec.getNicSettingMap()[i].getAdapter().getIp());
+                        }
+
                     }
 
                     Task task = template.cloneVM_Task(vmFolder, hostName, spec);
