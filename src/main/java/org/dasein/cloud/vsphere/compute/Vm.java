@@ -624,7 +624,7 @@ public class Vm extends AbstractVMSupport<PrivateCloud> {
                                     CustomizationFixedIp fixedIp = new CustomizationFixedIp();
                                     fixedIp.setIpAddress(options.getPrivateIp());
                                     adapter.setIp(fixedIp);
-                                    adapter.setSubnetMask("255.255.255.0");
+                                    adapter.setSubnetMask("255.255.252.0");
                                     adapterMap.setAdapter(adapter);
                                 }
                                 nicMappings.add(adapterMap);
