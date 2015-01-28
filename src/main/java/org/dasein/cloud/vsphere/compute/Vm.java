@@ -623,11 +623,15 @@ public class Vm extends AbstractVMSupport<PrivateCloud> {
                                     adapter.setGateway(options.getGatewayList());
                                     CustomizationFixedIp fixedIp = new CustomizationFixedIp();
                                     fixedIp.setIpAddress(options.getPrivateIp());
+                                    log.debug("custom IP: " + options.getPrivateIp());
                                     adapter.setIp(fixedIp);
                                     if (options.getMetaData().containsKey("vSphereNetMaskNothingToSeeHere")) {
-                                        adapter.setSubnetMask((String)options.getMetaData().get("vSphereNetMaskNothingToSeeHere"));
+                                        String netmask = (String)options.getMetaData().get("vSphereNetMaskNothingToSeeHere");
+                                        adapter.setSubnetMask(netmask);
+                                        log.debug("custom subnet mask: " + netmask);
                                     } else {
                                         adapter.setSubnetMask("255.255.252.0");
+                                        log.debug("default subnet mask");
                                     }
                                     adapterMap.setAdapter(adapter);
                                 }
